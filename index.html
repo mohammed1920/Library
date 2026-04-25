@@ -3,97 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المكتبة القانونية الرقمية</title>
+    <title>المكتبة القانونية الذكية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --accent: #c29d5f; --bg: #0b1120; --card: #161f32; --text: #f1f5f9; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); padding: 0; margin: 0; text-align: center; line-height: 1.6; }
+        
         header { padding: 30px 15px; background: rgba(30, 41, 59, 0.5); border-bottom: 1px solid rgba(194, 157, 95, 0.3); }
-        h1 { color: var(--accent); font-size: 22px; margin-bottom: 5px; }
+        h1 { color: var(--accent); font-size: 24px; margin-bottom: 5px; }
         .subtitle { color: #94a3b8; font-size: 13px; }
+
         .search-container { margin: -20px auto 25px; max-width: 85%; }
-        #searchInput { width: 100%; padding: 12px 20px; border-radius: 25px; border: 1px solid var(--accent); background: var(--card); color: white; font-size: 14px; outline: none; }
+        #searchInput { width: 100%; padding: 12px 20px; border-radius: 25px; border: 1px solid var(--accent); background: var(--card); color: white; font-size: 14px; outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; max-width: 95%; margin: 20px auto; padding: 0 10px; }
-        .card { background: var(--card); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); padding: 15px; position: relative; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        
+        .card { background: var(--card); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); padding: 15px; position: relative; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 240px; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        
         .icon-box { font-size: 28px; color: var(--accent); margin: 10px 0; }
-        .badge { position: absolute; top: 10px; left: 10px; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: bold; color: white; }
-        h3 { margin: 5px 0; font-size: 16px; color: var(--text); }
-        .info { color: #94a3b8; font-size: 11px; margin-bottom: 10px; }
+        
+        h3 { margin: 5px 0 2px 0; font-size: 17px; color: var(--text); font-weight: bold; }
+        .author { color: #94a3b8; font-size: 11px; margin-bottom: 15px; display: block; }
+        
         .btn { background: var(--accent); color: #0b1120; padding: 8px 15px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; transition: 0.3s; display: block; margin-top: auto; }
-        .stats-row { display: flex; justify-content: center; gap: 5px; margin-bottom: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; flex-wrap: wrap; }
-        .stat-item { font-size: 10px; color: var(--accent); background: rgba(194, 157, 95, 0.1); padding: 2px 6px; border-radius: 4px; display: flex; align-items: center; gap: 4px; }
+        
+        .stats-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        .stat-item { font-size: 10px; color: var(--accent); background: rgba(194, 157, 95, 0.1); padding: 2px 8px; border-radius: 4px; display: flex; align-items: center; gap: 4px; }
+
+        #loading { color: var(--accent); margin-top: 20px; font-weight: bold; font-size: 14px; }
+
         footer { margin-top: 40px; padding: 30px 15px; background: #0f172a; border-top: 1px solid rgba(255,255,255,0.05); }
-        .tg-btn { background: #0088cc; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; }
+        .tg-btn { background: #0088cc; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; transition: 0.3s; }
+        .tg-btn:hover { background: #0099e6; transform: scale(1.05); }
     </style>
 </head>
 <body>
 
     <header>
-        <h1><i class="fas fa-gavel"></i> منصة الاختبارات القانونية</h1>
-        <p class="subtitle">بوابة التدريب القانوني المستمر</p>
+        <h1><i class="fas fa-balance-scale"></i> منصة الاختبارات القانونية</h1>
+        <p class="subtitle">المكتبة الرقمية للتشريعات العراقية</p>
     </header>
 
     <div class="search-container">
         <input type="text" id="searchInput" placeholder="ابحث عن كتاب..." onkeyup="filterBooks()">
     </div>
 
-    <div class="grid" id="booksGrid">
-        <div class="card" data-repo="law-test">
-            <span class="badge" style="background: #10b981;">مكتمل</span>
-            <div class="icon-box"><i class="fas fa-university"></i></div>
-            <h3>القانون الدستوري</h3>
-            <p class="info">د. حميد حنون - دراسة تحليلية</p>
-            <div class="stats-row">
-                <span class="stat-item"><i class="fas fa-layer-group"></i> <span class="ch-count">جارٍ التحميل...</span></span>
-            </div>
-            <a href="https://mohammed1920.github.io/law-test/" class="btn">دخول</a>
-        </div>
-
-        <div class="card" data-repo="administrative-judiciary">
-            <span class="badge" style="background: #f59e0b;">جديد</span>
-            <div class="icon-box"><i class="fas fa-balance-scale"></i></div>
-            <h3>القضاء الإداري</h3>
-            <p class="info">مراجعة شاملة للمواد القضائية</p>
-            <div class="stats-row">
-                <span class="stat-item"><i class="fas fa-layer-group"></i> <span class="ch-count">جارٍ التحميل...</span></span>
-            </div>
-            <a href="https://mohammed1920.github.io/administrative-judiciary/" class="btn">دخول</a>
-        </div>
-    </div>
+    <div id="loading">جارٍ جلب الكتب من المكتبة...</div>
+    <div class="grid" id="booksGrid"></div>
 
     <footer>
         <a href="https://t.me/M5M5P" class="tg-btn" target="_blank">
-            <i class="fab fa-telegram-plane"></i> انضم لقناتنا
+            <i class="fab fa-telegram-plane"></i> انضم لقناتنا على التليجرام
         </a>
         <p style="font-size: 11px; color: #64748b; margin-top: 20px;">&copy; 2026 جميع الحقوق محفوظة</p>
     </footer>
 
     <script>
-        // دالة لجلب عدد الفصول تلقائياً من GitHub
-        async function fetchChapterCount() {
+        async function loadLibrary() {
             const username = "mohammed1920";
-            const cards = document.querySelectorAll('.card[data-repo]');
+            const grid = document.getElementById('booksGrid');
+            const loading = document.getElementById('loading');
 
-            for (let card of cards) {
-                const repo = card.getAttribute('data-repo');
-                const countElement = card.querySelector('.ch-count');
+            try {
+                // 1. جلب المستودعات
+                const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+                const repos = await response.json();
 
-                try {
-                    const response = await fetch(`https://api.github.com/repos/${username}/${repo}/contents/`);
-                    const files = await response.json();
-                    
-                    // حساب الملفات التي تبدأ بـ ch وتنتهي بـ .html
-                    const chapters = files.filter(file => 
-                        file.name.toLowerCase().startsWith('ch') && 
-                        file.name.toLowerCase().endsWith('.html')
-                    );
+                // 2. فلترة المستودعات التي تبدأ بـ law-
+                const lawRepos = repos.filter(repo => repo.name.toLowerCase().startsWith('law-'));
+                
+                loading.style.display = 'none';
 
-                    countElement.innerText = chapters.length + " فصل";
-                } catch (error) {
-                    console.error("خطأ في جلب البيانات:", error);
-                    countElement.innerText = "فصول متعددة";
+                for (let repo of lawRepos) {
+                    // 3. جلب عدد الفصول
+                    let chCount = 0;
+                    try {
+                        const contentResp = await fetch(`https://api.github.com/repos/${username}/${repo.name}/contents/`);
+                        const files = await contentResp.json();
+                        chCount = files.filter(f => f.name.toLowerCase().startsWith('ch') && f.name.endsWith('.html')).length;
+                    } catch(e) { chCount = 0; }
+
+                    // 4. تقسيم الوصف (العنوان | المؤلف)
+                    const description = repo.description || "كتاب قانوني | مستشار قانوني";
+                    const [title, author] = description.split('|').map(s => s.trim());
+
+                    // 5. إنشاء البطاقة
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div>
+                            <div class="icon-box"><i class="fas fa-book"></i></div>
+                            <h3>${title}</h3>
+                            <span class="author">${author || 'مؤلف الكتاب'}</span>
+                        </div>
+                        <div>
+                            <div class="stats-row">
+                                <span class="stat-item"><i class="fas fa-layer-group"></i> ${chCount} فصل</span>
+                            </div>
+                            <a href="https://${username}.github.io/${repo.name}/" class="btn">دخول الاختبار</a>
+                        </div>
+                    `;
+                    grid.appendChild(card);
                 }
+            } catch (error) {
+                loading.innerText = "حدث خطأ في الاتصال، يرجى تحديث الصفحة.";
             }
         }
 
@@ -106,8 +120,7 @@
             }
         }
 
-        // تشغيل الدالة عند تحميل الصفحة
-        window.onload = fetchChapterCount;
+        window.onload = loadLibrary;
     </script>
 </body>
 </html>
