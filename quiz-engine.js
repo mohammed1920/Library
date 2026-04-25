@@ -1,5 +1,4 @@
 function startQuiz(questions) {
-    // إضافة مكتبة الـ Confetti من الرابط الخارجي لتأثيرات النجاح
     const script = document.createElement('script');
     script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js";
     document.head.appendChild(script);
@@ -23,7 +22,13 @@ function startQuiz(questions) {
         .correct { background: rgba(34, 197, 94, 0.2) !important; border-color: var(--correct) !important; color: var(--correct); }
         .wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--wrong) !important; animation: shake 0.4s; color: var(--wrong); }
         .action-btn { width: 100%; padding: 15px; margin-top: 10px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; }
-        .review-box { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px; margin-top: 8px; text-align: right; border-right: 3px solid var(--accent); font-size: 14px; }
+        
+        /* تصميم أزرار التنقل السفلية */
+        .nav-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; padding-top: 10px; }
+        .footer-link { background: rgba(255,255,255,0.05); color: var(--text); text-decoration: none; padding: 12px; border-radius: 10px; text-align: center; font-size: 13px; border: 1px solid rgba(194,157,95,0.1); transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .footer-link:hover { background: rgba(194,157,95,0.1); border-color: var(--accent); }
+        .tg-icon { color: #0088cc; }
+
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     `;
@@ -43,6 +48,11 @@ function startQuiz(questions) {
             <div class="question-card"><h2 id="q-text"></h2></div>
             <div id="options-box" class="options-grid"></div>
             <button id="next-btn" class="action-btn" style="display:none" onclick="nextQuestion()">السؤال التالي ◄</button>
+        </div>
+        
+        <div class="nav-footer">
+            <a href="index.html" class="footer-link">🏠 الرئيسية</a>
+            <a href="https://t.me/M5M5P" target="_blank" class="footer-link"><span class="tg-icon">✈</span> قناة التليجرام</a>
         </div>
     </div>`;
 
@@ -87,7 +97,6 @@ function startQuiz(questions) {
         const percent = Math.round((scoreC/questions.length)*100);
         let msg = percent === 100 ? "درجة كاملة! أنت فخر للقضاء العراقي ⚖️" : (percent >= 75 ? "عاشت إيدك، مستواك قوي جداً! 🚀" : "مستوى جيد، استمر بالمراجعة! 📚");
         
-        // إطلاق تأثير الألوان (Confetti) إذا كانت النتيجة ممتازة
         if(percent >= 70 && window.confetti) {
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#c29d5f', '#ffffff', '#22c55e'] });
         }
