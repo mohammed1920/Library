@@ -1,5 +1,4 @@
 function startQuiz(questions) {
-    // إضافة مكتبة الـ Confetti
     const script = document.createElement('script');
     script.src = "https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js";
     document.head.appendChild(script);
@@ -23,7 +22,6 @@ function startQuiz(questions) {
         .correct { background: rgba(34, 197, 94, 0.2) !important; border-color: var(--correct) !important; color: var(--correct); }
         .wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--wrong) !important; animation: shake 0.4s; color: var(--wrong); }
         .action-btn { width: 100%; padding: 15px; margin-top: 10px; background: var(--accent); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        .action-btn:active { transform: scale(0.98); }
         
         .nav-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
         .footer-link { background: var(--card); color: var(--text); text-decoration: none; padding: 12px; border-radius: 12px; text-align: center; font-size: 13px; border: 1px solid rgba(194,157,95,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -34,7 +32,10 @@ function startQuiz(questions) {
     `;
     document.head.appendChild(style);
 
-    const MAIN_URL = "https://mohammed1920.github.io/Library/";
+    // الرابط العام للمكتبة
+    const GLOBAL_LIBRARY = "https://mohammed1920.github.io/Library/";
+    // رابط صفحة الفصول (يرجع خطوة واحدة للوراء من المجلد الحالي)
+    const CHAPTERS_PAGE = "index.html"; 
 
     document.body.innerHTML = `<div class="quiz-container">
         <div class="top-bar">
@@ -53,7 +54,7 @@ function startQuiz(questions) {
         </div>
         
         <div class="nav-footer">
-            <a href="${MAIN_URL}" class="footer-link">🏠 المكتبة الرئيسية</a>
+            <a href="${GLOBAL_LIBRARY}" class="footer-link">🏠 المكتبة العامة</a>
             <a href="https://t.me/M5M5P" target="_blank" class="footer-link"><span class="tg-icon">✈</span> التليجرام</a>
         </div>
     </div>`;
@@ -103,13 +104,18 @@ function startQuiz(questions) {
             confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#c29d5f', '#ffffff', '#22c55e'] });
         }
 
+        // مسح التاريخ حتى يرجع الطالب لصفحة الفصول مباشرة عند ضغط زر الرجوع بالهاتف
+        window.history.replaceState(null, null, CHAPTERS_PAGE);
+
         document.getElementById('quiz-content').innerHTML = `
             <div class="question-card" style="text-align:center">
                 <h2 style="color:var(--accent)">${msg}</h2>
                 <div style="font-size:50px; margin:20px 0;">🎯 ${percent}%</div>
                 <button class="action-btn" onclick="shareResult()">نشر النتيجة 🔗</button>
                 <button class="action-btn" style="background:transparent; border:1px solid var(--accent); color:var(--accent)" onclick="showReview()">مراجعة الأخطاء (${scoreW})</button>
-                <button class="action-btn" style="background:#f1f5f9; color:#000" onclick="window.location.replace('${MAIN_URL}')">الخروج للمكتبة 🚪</button>
+                
+                <button class="action-btn" style="background:#f1f5f9; color:#000" onclick="window.location.href='${CHAPTERS_PAGE}'">الخروج لصفحة الفصول 📖</button>
+                
                 <button class="action-btn" style="background:transparent; border:none; color:#94a3b8; font-size:12px; margin-top:10px" onclick="location.reload()">إعادة الاختبار ↻</button>
                 <div id="review-area" style="display:none; margin-top:20px"></div>
             </div>`;
@@ -118,7 +124,7 @@ function startQuiz(questions) {
     window.shareResult = () => {
         const text = `حصلت على ${scoreC} من ${questions.length} في اختبار ${document.title}!\nالوقت: ${document.getElementById('timer').innerText}`;
         if(navigator.share) navigator.share({ title: 'نتيجتي', text: text, url: window.location.href });
-        else alert("انسخ نتيجتك: " + text);
+        else alert("نسخ نتيجتك: " + text);
     };
 
     window.showReview = () => {
