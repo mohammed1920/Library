@@ -54,8 +54,7 @@ function startQuiz(questions) {
         </div>
     </div>`;
 
-    // خلط ترتيب الأسئلة عند البداية
-    questions.sort(() => Math.random() - 0.5);
+    // ملاحظة: تم حذف سطر ترتيب الأسئلة العشوائي (questions.sort) لتعرض بالترتيب الأصلي.
 
     let current = 0, scoreC = 0, scoreW = 0, seconds = 0, wrongAnswers = [];
     const timerInterval = setInterval(() => { seconds++; 
@@ -70,10 +69,10 @@ function startQuiz(questions) {
         const box = document.getElementById('options-box'); box.innerHTML = '';
         document.getElementById('next-btn').style.display = 'none';
 
-        // تنظيف الخيارات من أي undefined أو فراغات ودعم عدد مفتوح من الحروف
         const alphabet = ['أ','ب','ج','د','هـ','و','ز','ح'];
         let cleanOptions = q.options.filter(opt => opt !== undefined && opt !== "");
         
+        // خلط ترتيب الاختيارات فقط مع الحفاظ على منطق الإجابة الصحيحة
         let opts = cleanOptions.map((t, i) => ({ t, isC: i === q.correct })).sort(() => Math.random() - 0.5);
         
         opts.forEach((opt, i) => {
