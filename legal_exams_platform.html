@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الاختبارات القانونية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --accent: #c29d5f; --bg: #0b1120; --card: #161f32; --text: #f1f5f9; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: var(--text); padding: 0; margin: 0; text-align: center; line-height: 1.6; }
+
+        header { padding: 30px 15px; background: rgba(30, 41, 59, 0.5); border-bottom: 1px solid rgba(194, 157, 95, 0.3); }
+        h1 { color: var(--accent); font-size: 24px; margin-bottom: 5px; }
+        .subtitle { color: #94a3b8; font-size: 13px; }
+
+        .search-container { margin: 20px auto 25px; max-width: 85%; }
+        #searchInput { width: 100%; padding: 12px 20px; border-radius: 25px; border: 1px solid var(--accent); background: var(--card); color: white; font-size: 14px; outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; max-width: 95%; margin: 20px auto; padding: 0 10px; }
+
+        .card { background: var(--card); border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); padding: 15px; position: relative; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+
+        .icon-box { font-size: 28px; color: var(--accent); margin: 10px 0; }
+        h3 { margin: 5px 0 2px 0; font-size: 15px; color: var(--text); font-weight: bold; }
+        .author { color: #94a3b8; font-size: 11px; margin-bottom: 15px; display: block; }
+
+        .btn { background: var(--accent); color: #0b1120; padding: 8px 15px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 13px; transition: 0.3s; display: block; margin-top: auto; }
+        .btn:hover { opacity: 0.85; }
+
+        .stats-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        .stat-item { font-size: 10px; color: var(--accent); background: rgba(194, 157, 95, 0.1); padding: 2px 8px; border-radius: 4px; display: flex; align-items: center; gap: 4px; }
+
+        .no-results { color: #94a3b8; margin-top: 30px; font-size: 14px; display: none; }
+
+        footer { margin-top: 40px; padding: 30px 15px; background: #0f172a; border-top: 1px solid rgba(255,255,255,0.05); }
+        .tg-btn { background: #0088cc; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: bold; transition: 0.3s; }
+        .tg-btn:hover { background: #0099e6; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><i class="fas fa-balance-scale"></i> منصة الاختبارات القانونية</h1>
+    <p class="subtitle">المكتبة الرقمية للتشريعات العراقية</p>
+</header>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="ابحث عن كتاب..." onkeyup="filterBooks()">
+</div>
+
+<div class="grid" id="booksGrid"></div>
+<div class="no-results" id="noResults">لا توجد نتائج مطابقة للبحث.</div>
+
+<footer>
+    <a href="https://t.me/M5M5P" class="tg-btn" target="_blank">
+        <i class="fab fa-telegram-plane"></i> انضم لقناتنا على التليجرام
+    </a>
+    <p style="font-size: 11px; color: #64748b; margin-top: 20px;">&copy; 2026 جميع الحقوق محفوظة</p>
+</footer>
+
+<script>
+// ========================================================
+// سيقوم النظام الآلي بتحديث هذه المصفوفة تلقائياً كل يوم
+// ========================================================
+const BOOKS = [];
+// ========================================================
+
+const username = "mohammed1920";
+
+function renderBooks(books) {
+    const grid = document.getElementById('booksGrid');
+    grid.innerHTML = '';
+
+    books.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div>
+                <div class="icon-box"><i class="fas fa-book"></i></div>
+                <h3>${book.title}</h3>
+                <span class="author">${book.author}</span>
+            </div>
+            <div>
+                <div class="stats-row">
+                    <span class="stat-item"><i class="fas fa-layer-group"></i> ${book.chapters} فصل</span>
+                </div>
+                <a href="https://${username}.github.io/${book.repo}/" class="btn">دخول الاختبار</a>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function filterBooks() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = BOOKS.filter(b => b.title.toLowerCase().includes(input));
+    renderBooks(filtered);
+    document.getElementById('noResults').style.display = filtered.length === 0 ? 'block' : 'none';
+}
+
+// تشغيل العرض المباشر للكتب عند فتح الصفحة
+renderBooks(BOOKS);
+</script>
+
+</body>
+</html>
