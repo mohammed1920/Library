@@ -1,0 +1,32 @@
+name: Auto Update Library
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # يعمل تلقائياً كل يوم منتصف الليل بالتوقيت العالمي
+  workflow_dispatch:      # يتيح لك التشغيل اليدوي بضغطة زر في أي وقت
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install Dependencies
+      run: pip install requests
+
+    - name: Run Update Script
+      run: python update_library.py
+
+    - name: Commit and Push changes
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git add index.html
+        git diff-index --quiet HEAD || git commit -m "تحديث تلقائي للمكتبة القانونية"
+        git push
